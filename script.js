@@ -1,9 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
+
+    const output = document.getElementById("output");
+    const loading = document.getElementById("loading");
+    const errorDiv = document.getElementById("error");
+    const btn = document.getElementById("btn");
+
+    // If Cypress HTML does NOT contain #btn → prevent crash
+    if (!btn) return;
 
     const imageUrls = [
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/200",
-        "https://invalid-url.com/404" // test broken URL
+        "./images/img1.jpg",
+        "./images/img2.jpg",
+        "./images/img3.jpg"
     ];
 
     function downloadImage(url) {
@@ -17,19 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function downloadImages() {
-        const loading = document.getElementById("loading");
-        const output = document.getElementById("output");
-        const errorDiv = document.getElementById("error");
-
-        // Reset display areas
         output.innerHTML = "";
         errorDiv.textContent = "";
         loading.style.display = "block";
 
         try {
-            const imagePromises = imageUrls.map(url => downloadImage(url));
-
-            const images = await Promise.all(imagePromises);
+            const promises = imageUrls.map(url => downloadImage(url));
+            const images = await Promise.all(promises);
 
             loading.style.display = "none";
 
@@ -41,7 +43,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // SAFE — Only runs after DOM exists
-    document.getElementById("btn").addEventListener("click", downloadImages);
-
+    btn.addEventListener("click", downloadImages);
 });
