@@ -1,45 +1,47 @@
-const imageUrls = [
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/200",
-    "https://invalid-url.com/404"  // Example broken URL to test error handling
-];
+document.addEventListener("DOMContentLoaded", () => {
 
-function downloadImage(url) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = url;
+    const imageUrls = [
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/200",
+        "https://invalid-url.com/404" // test broken URL
+    ];
 
-        img.onload = () => resolve(img);  
-        img.onerror = () => reject(`Failed to download image: ${url}`);
-    });
-}
+    function downloadImage(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = url;
 
-async function downloadImages() {
-    const loading = document.getElementById("loading");
-    const output = document.getElementById("output");
-    const errorDiv = document.getElementById("error");
-
-    // Reset everything
-    output.innerHTML = "";
-    errorDiv.textContent = "";
-    loading.style.display = "block";  // show spinner
-
-    try {
-        const imagePromises = imageUrls.map(url => downloadImage(url));
-
-        // Wait until ALL images download
-        const images = await Promise.all(imagePromises);
-
-        // Hide loading spinner
-        loading.style.display = "none";
-
-        // Display all downloaded images
-        images.forEach(img => output.appendChild(img));
-
-    } catch (err) {
-        loading.style.display = "none";
-        errorDiv.textContent = err;
+            img.onload = () => resolve(img);
+            img.onerror = () => reject(`Failed to download image: ${url}`);
+        });
     }
-}
 
-document.getElementById("btn").addEventListener("click", downloadImages);
+    async function downloadImages() {
+        const loading = document.getElementById("loading");
+        const output = document.getElementById("output");
+        const errorDiv = document.getElementById("error");
+
+        // Reset display areas
+        output.innerHTML = "";
+        errorDiv.textContent = "";
+        loading.style.display = "block";
+
+        try {
+            const imagePromises = imageUrls.map(url => downloadImage(url));
+
+            const images = await Promise.all(imagePromises);
+
+            loading.style.display = "none";
+
+            images.forEach(img => output.appendChild(img));
+
+        } catch (err) {
+            loading.style.display = "none";
+            errorDiv.textContent = err;
+        }
+    }
+
+    // SAFE — Only runs after DOM exists
+    document.getElementById("btn").addEventListener("click", downloadImages);
+
+});
