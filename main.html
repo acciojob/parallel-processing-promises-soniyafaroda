@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Output Test</title>
+    <meta charset="UTF-8">
+    <title>Image Downloader</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Output Area</h1>
+<h2>Image Downloader using Promise.all()</h2>
 
-  <!-- THE ELEMENT CYPRESS IS LOOKING FOR -->
-  <div id="output"></div>
+<button id="startBtn">Download Images</button>
 
-  <button id="process">Process</button>
+<div id="loading" class="hidden">⏳ Loading...</div>
 
-  <script src="script.js"></script>
+<div id="error" class="error"></div>
+
+<div id="output" class="output"></div>
+
+<script src="script.js"></script>
+
 </body>
 </html>

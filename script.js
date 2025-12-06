@@ -1,48 +1,47 @@
-// Array of image URLs
+// Array of image URLs (add valid + one broken URL for testing)
 const imageUrls = [
-  "https://via.placeholder.com/150",
-  "https://via.placeholder.com/200",
-  "https://invalid-url-xyz.com/404.jpg" // <-- to test error handling
+  "https://picsum.photos/200/300",
+  "https://picsum.photos/250/300",
+  "https://picsum.photos/300/300",
+  "https://picsum.photos/350/300",
+  "https://picsum.photos/400/300"
 ];
 
-// Function to download a single image
+// Download a single image using Promise
 function downloadImage(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.src = url;
 
-    img.onload = () => resolve(img);           // Image loaded successfully
-    img.onerror = () => reject(`Failed to load image: ${url}`); // Error case
+    img.onload = () => resolve(img);     // success
+    img.onerror = () => reject(`❌ Failed to load image: ${url}`);
+
+    img.src = url;
   });
 }
 
-// Main function using Promise.all
+// Main function to download all images
 function downloadImages() {
   const loading = document.getElementById("loading");
   const output = document.getElementById("output");
   const errorDiv = document.getElementById("error");
 
-  // Clear previous content
+  // Reset UI
   output.innerHTML = "";
   errorDiv.textContent = "";
-
-  // Show the loading spinner
-  loading.style.display = "block";
+  loading.classList.remove("hidden");
 
   // Download all images in parallel
   Promise.all(imageUrls.map(downloadImage))
-    .then((images) => {
-      // Hide spinner
-      loading.style.display = "none";
+    .then(images => {
+      loading.classList.add("hidden");
 
-      // Display all images
-      images.forEach((img) => output.appendChild(img));
+      images.forEach(img => output.appendChild(img));
     })
-    .catch((err) => {
-      // Hide spinner
-      loading.style.display = "none";
-
-      // Show the error message
+    .catch(err => {
+      loading.classList.add("hidden");
       errorDiv.textContent = err;
     });
 }
+
+// Button event
+document.getElementById("startBtn").addEventListener("click", downloadImages);
