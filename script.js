@@ -1,47 +1,45 @@
-// Array of image URLs (add valid + one broken URL for testing)
 const imageUrls = [
-  "https://picsum.photos/200/300",
-  "https://picsum.photos/250/300",
-  "https://picsum.photos/300/300",
-  "https://picsum.photos/350/300",
-  "https://picsum.photos/400/300"
+  "https://picsum.photos/200?random=1",
+  "https://picsum.photos/200?random=2",
+  "https://picsum.photos/200?random=3"
 ];
 
-// Download a single image using Promise
+// Download single image (returns a Promise)
 function downloadImage(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-
-    img.onload = () => resolve(img);     // success
-    img.onerror = () => reject(`❌ Failed to load image: ${url}`);
-
     img.src = url;
+
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(`Failed to load image: ${url}`);
   });
 }
 
-// Main function to download all images
+// Main download function
 function downloadImages() {
-  const loading = document.getElementById("loading");
-  const output = document.getElementById("output");
+  const loadingDiv = document.getElementById("loading");
+  const outputDiv = document.getElementById("output");
   const errorDiv = document.getElementById("error");
 
-  // Reset UI
-  output.innerHTML = "";
-  errorDiv.textContent = "";
-  loading.classList.remove("hidden");
+  outputDiv.innerHTML = "";
+  errorDiv.innerHTML = "";
 
-  // Download all images in parallel
-  Promise.all(imageUrls.map(downloadImage))
+  loadingDiv.style.display = "block";
+
+  Promise.all(imageUrls.map(url => downloadImage(url)))
     .then(images => {
-      loading.classList.add("hidden");
+      loadingDiv.style.display = "none";
 
-      images.forEach(img => output.appendChild(img));
+      images.forEach(img => {
+        outputDiv.appendChild(img);
+      });
     })
     .catch(err => {
-      loading.classList.add("hidden");
+      loadingDiv.style.display = "none";
       errorDiv.textContent = err;
     });
 }
 
-// Button event
-document.getElementById("startBtn").addEventListener("click", downloadImages);
+document
+  .getElementById("download-images-button")
+  .addEventListener("click", downloadImages);

@@ -1,28 +1,17 @@
-/*  your css code here. If applicable */
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-}
-
 #loading {
-    font-size: 22px;
-    color: blue;
-    margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: blue;
 }
 
-.hidden {
-    display: none;
+#error {
+  color: red;
+  margin-top: 10px;
 }
 
-.error {
-    color: red;
-    margin-top: 15px;
-    font-size: 18px;
-}
-
-.output img {
-    width: 150px;
-    height: auto;
-    margin: 10px;
-    border: 2px solid #333;
+#output img {
+  width: 200px;
+  height: auto;
+  margin: 10px;
+  border: 2px solid #333;
 }
