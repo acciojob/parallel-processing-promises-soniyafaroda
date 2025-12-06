@@ -1,10 +1,9 @@
 const imageUrls = [
-  "https://picsum.photos/200?random=1",
-  "https://picsum.photos/200?random=2",
-  "https://picsum.photos/200?random=3"
+  "https://picsum.photos/id/237/200/300",
+  "https://picsum.photos/id/238/200/300",
+  "https://picsum.photos/id/239/200/300"
 ];
 
-// Download single image (returns a Promise)
 function downloadImage(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -15,7 +14,6 @@ function downloadImage(url) {
   });
 }
 
-// Main download function
 function downloadImages() {
   const loadingDiv = document.getElementById("loading");
   const outputDiv = document.getElementById("output");
@@ -23,7 +21,6 @@ function downloadImages() {
 
   outputDiv.innerHTML = "";
   errorDiv.innerHTML = "";
-
   loadingDiv.style.display = "block";
 
   Promise.all(imageUrls.map(url => downloadImage(url)))
